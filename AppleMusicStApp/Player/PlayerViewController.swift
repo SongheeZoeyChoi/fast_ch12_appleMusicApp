@@ -61,7 +61,11 @@ class PlayerViewController: UIViewController {
     
     @IBAction func togglePlayButton(_ sender: UIButton) {
         // TODO: 플레이버튼 토글 구현
-        
+        if simplePlayer.isPlaying { // 재생 중일때
+            simplePlayer.pause() // 일시정지
+        } else {
+            simplePlayer.play() // 재생
+        }
         updatePlayButton()
     }
 }
@@ -69,7 +73,10 @@ class PlayerViewController: UIViewController {
 extension PlayerViewController {
     func updateTrackInfo() {
         // TODO: 트랙 정보 업데이트
-        
+        guard let track = simplePlayer.currentItem?.convertToTrack() else { return }
+        thumbnailImageView.image = track.artwork
+        titleLabel.text = track.title
+        artistLabel.text = track.artist
     }
     
     func updateTintColor() {
@@ -102,5 +109,14 @@ extension PlayerViewController {
     
     func updatePlayButton() {
         // TODO: 플레이버튼 업데이트 UI작업 > 재생/멈춤
+        if simplePlayer.isPlaying {
+            let configuration = UIImage.SymbolConfiguration(pointSize: 40) // 아이콘 이미지 포인트 사이즈만큼 configuration
+            let image = UIImage(systemName: "pause.fill", withConfiguration: configuration)
+            playControlButton.setImage(image, for: .normal)
+        } else {
+            let configuration = UIImage.SymbolConfiguration(pointSize: 40) // 아이콘 이미지 포인트 사이즈만큼 configuration
+            let image = UIImage(systemName: "play.fill", withConfiguration: configuration)
+            playControlButton.setImage(image, for: .normal)
+        }
     }
 }
