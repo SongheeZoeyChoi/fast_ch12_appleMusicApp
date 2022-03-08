@@ -38,8 +38,23 @@ extension HomeViewController: UICollectionViewDataSource {
     // 헤더뷰 어떻게 표시할까?
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
+        //Header View
         case UICollectionView.elementKindSectionHeader:
+            guard let item = trackManager.todaysTrack else {
+                return UICollectionReusableView()
+            }
+            
             // TODO: 헤더 구성하기
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TrackCollectionHeaderView", for: indexPath) as? TrackCollectionHeaderView else { return UICollectionReusableView() }
+            header.update(with: item)
+            header.tapHandler = { item -> Void in
+                // Player를 띄운다.
+                print("item title:\(item.convertToTrack()?.title)")
+            }
+            return header
+            
+        //Footer View
+        case UICollectionView.elementKindSectionFooter:
             return UICollectionReusableView()
         default:
             return UICollectionReusableView()
